@@ -27,9 +27,7 @@ class TareasRepository @Inject constructor(
     suspend fun putTareas(id:Int, tareaDto: TareaDto){
         api.putTareas(id, tareaDto)
     }
-    suspend fun postTareas(tareaDto: TareaDto): TareaDto {
-        return api.postTarea(tareaDto)
-    }
+
 
     fun getTareasbyId(id: Int): Flow<Resource<TareaDto>> = flow {
         try {

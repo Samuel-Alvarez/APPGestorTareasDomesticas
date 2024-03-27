@@ -11,11 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.edu.ucne.gestortareasdomesticas.data.remote.dto.EmpleadoDto
 import com.edu.ucne.gestortareasdomesticas.data.remote.dto.TareaDto
 import com.edu.ucne.gestortareasdomesticas.util.Screen
 import com.edu.ucne.gestortareasdomesticas.view.Tareas.tareaViewModel

@@ -6,10 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.QueryStats
-import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -29,11 +26,8 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun actualizarEstado(
-    navHostController: NavHostController,
-    Id: Int,
-    viewModel: tareaViewModel = hiltViewModel(),
-) {
+fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: tareaViewModel = hiltViewModel())
+{
     remember {
 
         viewModel.setTarea(Id)
@@ -76,8 +70,20 @@ fun actualizarEstado(
                     .padding(8.dp, vertical = 60.dp),
             ) {
                 OutlinedTextField(
+                    value = viewModel.descripcion,
+                    onValueChange = {},
+                    label = { Text(text = "Descripcion") },
+                    modifier = Modifier.fillMaxWidth(),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Description,
+                            contentDescription = null
+                        )
+                    }
+                )
+                OutlinedTextField(
                     value = viewModel.fecha,
-                    onValueChange = { viewModel.fecha = it },
+                    onValueChange = {},
                     modifier = Modifier.fillMaxWidth(),
                     label = { Text(text = "Fecha") },
                     readOnly = true,
@@ -99,6 +105,19 @@ fun actualizarEstado(
                         }
                     }
 
+                )
+
+                OutlinedTextField(
+                    value = viewModel.nombre,
+                    onValueChange = {},
+                    label = { Text(text = "Encargado") },
+                    modifier = Modifier.fillMaxWidth(),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Subject,
+                            contentDescription = null
+                        )
+                    }
                 )
                 OutlinedTextField(
 
@@ -154,9 +173,9 @@ fun actualizarEstado(
                     contentColor = Color(0xFFFFFFFF)
                 )
                 ) {
-                    Icon(imageVector = Icons.Filled.Save, contentDescription = "Save")
+                    Icon(imageVector = Icons.Filled.Save, contentDescription = "Update")
                     Text(
-                        text = "Guardar",
+                        text = "Actualizar",
                         fontWeight = FontWeight.Black,
                     )
                 }

@@ -95,14 +95,14 @@ class tareaViewModel @Inject constructor(
     fun modificar() {
         viewModelScope.launch {
             tareasRepository.putTareas(
-                tareaId.toInt(),
+                tareaId,
                 TareaDto(
                     tareaId = tareaId,
+                    empleadoId = empleadoId,
                     descripcion = descripcion,
                     fecha = fecha,
                     nombre = nombre,
-                    estado = estado,
-                    empleadoId = empleadoId
+                    estado = estado
                 )
             )
 
