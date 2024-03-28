@@ -26,8 +26,7 @@ import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: tareaViewModel = hiltViewModel())
-{
+fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: tareaViewModel = hiltViewModel()) {
     remember {
 
         viewModel.setTarea(Id)
@@ -114,7 +113,7 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
                     modifier = Modifier.fillMaxWidth(),
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.Subject,
+                            imageVector = Icons.Default.Person,
                             contentDescription = null
                         )
                     }
@@ -142,21 +141,45 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp)
-
                 ) {
-                    viewModel.tareasEstatus.forEach { opcion ->
-                        DropdownMenuItem(
-                            text = {
-                                Text(text = opcion, textAlign = TextAlign.Center)
-                            },
-                            onClick = {
-                                viewModel.expanded = false
-                                viewModel.estado = opcion
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp)
-                        )
+                    when (viewModel.estado) {
+                        "Por Hacer" -> {
+                            viewModel.tareasEstatus.filter { it == "En Proceso" }
+                                .forEach { opcion ->
+                                    DropdownMenuItem(
+                                        text = {
+                                            Text(text = opcion, textAlign = TextAlign.Center)
+                                        },
+                                        onClick = {
+                                            viewModel.expanded = false
+                                            viewModel.estado = opcion
+                                        },
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 8.dp)
+                                    )
+                                }
+                        }
+                        "En Proceso" -> {
+                            viewModel.tareasEstatus.filter { it == "Terminada" }
+                                .forEach { opcion ->
+                                    DropdownMenuItem(
+                                        text = {
+                                            Text(text = opcion, textAlign = TextAlign.Center)
+                                        },
+                                        onClick = {
+                                            viewModel.expanded = false
+                                            viewModel.estado = opcion
+                                        },
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 8.dp)
+                                    )
+                                }
+                        }
+                        "Terminada" -> {
+
+                        }
                     }
                 }
 
@@ -169,9 +192,9 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
                         navHostController.navigate(Screen.listadoTareas.route)
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Gray,
-                    contentColor = Color(0xFFFFFFFF)
-                )
+                        containerColor = Color.Blue,
+                        contentColor = Color(0xFFFFFFFF)
+                    )
                 ) {
                     Icon(imageVector = Icons.Filled.Save, contentDescription = "Update")
                     Text(

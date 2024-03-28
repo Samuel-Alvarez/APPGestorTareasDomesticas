@@ -1,5 +1,6 @@
 package com.edu.ucne.gestortareasdomesticas.ui.componentes
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,7 +28,7 @@ fun listadoTareas(navHostController: NavHostController, viewModel: tareaViewMode
 
     Scaffold(
         topBar ={
-            TopAppBar(title = { Text(text = "Listado de Tareas") })
+            TopAppBar(title = { Text(text = "Tareas Asignadas") })
         },
 
 
@@ -47,10 +48,12 @@ fun listadoTareas(navHostController: NavHostController, viewModel: tareaViewMode
 @Composable
 fun TareaListBody( navHostController: NavHostController, tareaList: List<TareaDto>, Onclick : (TareaDto) -> Unit,
                     viewModel: tareaViewModel = hiltViewModel()) {
+    val tareasPendientes = tareaList.filter { it.estado != "Terminada" }
+
     Column(modifier = Modifier.fillMaxWidth()) {
         LazyColumn {
-            items(tareaList) { tareas ->
-                TareaRow(navHostController = navHostController, tareas, viewModel)
+            items(tareasPendientes) { tarea ->
+                TareaRow(navHostController = navHostController, tarea = tarea, viewModel = viewModel)
             }
         }
     }
@@ -58,11 +61,18 @@ fun TareaListBody( navHostController: NavHostController, tareaList: List<TareaDt
 
 @Composable
 fun TareaRow( navHostController: NavHostController,tarea: TareaDto, viewModel: tareaViewModel = hiltViewModel()) {
+    val backgroundColor = when (tarea.estado) {
+        "En Proceso" -> Color(android.graphics.Color.parseColor("#FFFFE0"))
+        "Terminada" -> Color(android.graphics.Color.parseColor("#90EE90"))
+        else -> Color(android.graphics.Color.parseColor("#FFC0CB"))
+    }
+
     Column(
         Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clickable { navHostController.navigate(Screen.actualizarEstado.route + "/${tarea.tareaId}") }
+            .background(color = backgroundColor)
     ) {
 
         Row(modifier = Modifier
@@ -103,11 +113,12 @@ fun TareaRow( navHostController: NavHostController,tarea: TareaDto, viewModel: t
 
                     Icon(
                         imageVector = when (tarea.estado) {
+
                             "En Proceso" -> {
-                                Icons.Default.TaskAlt
+                                Icons.Default.Star
                             }
                             "Terminada" -> {
-                                Icons.Default.Star
+                                Icons.Default.TaskAlt
                             }
                             else -> {
                                 Icons.Default.Update

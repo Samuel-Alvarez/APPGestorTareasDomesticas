@@ -28,7 +28,7 @@ class tareaViewModel @Inject constructor(
     private val tareasRepository: TareasRepository
 ): ViewModel() {
 
-    val tareasEstatus = listOf("En Proceso", "Finalizada")
+    val tareasEstatus = listOf("Por Hacer", "En Proceso", "Terminada")
     var expanded by mutableStateOf(false)
 
     var uiState = MutableStateFlow(TareasListState())
@@ -66,7 +66,6 @@ class tareaViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-
 
     fun setTarea(id: Int) {
         tareaId = id

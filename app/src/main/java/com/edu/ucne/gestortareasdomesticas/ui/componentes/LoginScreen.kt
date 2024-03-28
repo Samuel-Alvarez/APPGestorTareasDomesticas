@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Email
@@ -18,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Green
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -49,9 +52,9 @@ fun LoginScreen(navHostController: NavHostController, viewModel: LoginViewModel 
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Text(
-                text = "Bienvenidos!",
+                text = "Bienvenidos/as!",
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                color = Color(0xFFFAA8A2),
+                color = Color(0xFFFFC4BF),
                 style = MaterialTheme.typography.titleLarge,
             )
             val uiState = viewModel.uiState.collectAsState()
@@ -62,7 +65,7 @@ fun LoginScreen(navHostController: NavHostController, viewModel: LoginViewModel 
                 maxLines = 1,
                 singleLine = true,
                 leadingIcon = {
-                    Icon(imageVector = Icons.Outlined.Email, null, tint = Color(0xFF3F41B5))
+                    Icon(imageVector = Icons.Outlined.Email, null, tint = Color(0xFFFCB1AC))
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
@@ -87,7 +90,7 @@ fun LoginScreen(navHostController: NavHostController, viewModel: LoginViewModel 
                 ),
                 singleLine = true,
                 leadingIcon = {
-                    Icon(imageVector = Icons.Outlined.Lock, null, tint = Color(0xFF3F41B5))
+                    Icon(imageVector = Icons.Outlined.Lock, null, tint = Color(0xFFFCB1AC))
                 },
 
                 trailingIcon = {
@@ -108,6 +111,9 @@ fun LoginScreen(navHostController: NavHostController, viewModel: LoginViewModel 
                     .padding(8.dp)
             )
             Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp),
                 onClick = {
                     viewModel.setLogin()
                     navHostController.navigate(Screen.listadoTareas.route)
@@ -123,12 +129,16 @@ fun LoginScreen(navHostController: NavHostController, viewModel: LoginViewModel 
 
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Gray,
+                    containerColor = Color.Blue,
                     contentColor = Color(0xFFFFFFFF)
-                ),
-                modifier = Modifier.align(Alignment.CenterHorizontally).padding(8.dp)
+                )
+
             ) {
-                Text(text = "LonIn")
+                Icon(imageVector = Icons.Filled.Key, contentDescription = "LogIn")
+                Text(
+                    text = "LogIn",
+                    fontWeight = FontWeight.Black,
+                )
             }
         }
     }
