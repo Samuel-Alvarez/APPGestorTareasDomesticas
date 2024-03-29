@@ -95,7 +95,7 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
 
                     trailingIcon = {
                         IconButton(
-                            onClick = { date.show() }
+                            onClick = { }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.CalendarToday,

@@ -35,5 +35,4 @@ object AppModule {
             .create(TareaApi::class.java)
     }
 
-
 }
