@@ -54,7 +54,7 @@ fun LoginScreen(navHostController: NavHostController, viewModel: LoginViewModel 
             Text(
                 text = "Bienvenidos/as!",
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                color = Color(0xFFFFC4BF),
+                color = Color(0xFF006FC7),
                 style = MaterialTheme.typography.titleLarge,
             )
             val uiState = viewModel.uiState.collectAsState()
