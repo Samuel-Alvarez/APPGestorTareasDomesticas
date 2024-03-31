@@ -8,8 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -22,11 +21,13 @@ import com.edu.ucne.gestortareasdomesticas.data.remote.dto.EmpleadoDto
 import com.edu.ucne.gestortareasdomesticas.data.remote.dto.TareaDto
 import com.edu.ucne.gestortareasdomesticas.util.Screen
 import com.edu.ucne.gestortareasdomesticas.view.Tareas.tareaViewModel
+import kotlinx.coroutines.delay
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: tareaViewModel = hiltViewModel()) {
+    var showMessage by remember { mutableStateOf(false) }
     remember {
 
         viewModel.setTarea(Id)
@@ -189,6 +190,7 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
                         .padding(15.dp),
                     onClick = {
                         viewModel.modificar()
+                        showMessage = true
                         navHostController.navigate(Screen.listadoTareas.route)
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -202,7 +204,23 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
                         fontWeight = FontWeight.Black,
                     )
                 }
+                if (showMessage) {
+                    LaunchedEffect(showMessage) {
+                        delay(50000)
+                        showMessage = false
+                    }
+                    Snackbar(
+                        modifier = Modifier.padding(16.dp),
+                        content = { Text(text = "¡Actualizado correctamente!") },
+                        action = {
+                            TextButton(onClick = { showMessage = false }) {
+                                Text("OK")
+                            }
+                        }
+                    )
+                }
             }
         }
     }
 }
+

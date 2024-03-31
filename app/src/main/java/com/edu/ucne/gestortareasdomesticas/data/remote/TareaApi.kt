@@ -16,8 +16,6 @@ interface TareaApi {
     @PUT("api/Tareas/{id}")
     suspend fun putTareas(@Path("id") id: Int, @Body tareaDto: TareaDto): Response<Unit>
 
-    @POST("api/Tareas")
-    suspend fun postTarea(@Body tareaDto: TareaDto): TareaDto
 
     //Empleados
     @GET("api/Empleados/{email},{clave}")
