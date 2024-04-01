@@ -206,7 +206,7 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
                 }
                 if (showMessage) {
                     LaunchedEffect(showMessage) {
-                        delay(50000)
+                        delay(5000)
                         showMessage = false
                     }
                     Snackbar(
