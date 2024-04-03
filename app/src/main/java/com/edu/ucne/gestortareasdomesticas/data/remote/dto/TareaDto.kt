@@ -7,4 +7,5 @@ data class TareaDto(
     val fecha: String = "",
     val nombre: String= "",
     val estado: String ="",
+    val codigoAcceso: String = ""
 )

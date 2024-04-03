@@ -5,14 +5,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,7 +48,8 @@ fun listadoTareas(navHostController: NavHostController, viewModel: tareaViewMode
 
 @Composable
 fun TareaListBody( navHostController: NavHostController, tareaList: List<TareaDto>, Onclick : (TareaDto) -> Unit,
-                    viewModel: tareaViewModel = hiltViewModel()) {
+                   viewModel: tareaViewModel = hiltViewModel()) {
+
     val tareasPendientes = tareaList.filter { it.estado != "Terminada" }
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -59,22 +61,28 @@ fun TareaListBody( navHostController: NavHostController, tareaList: List<TareaDt
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TareaRow( navHostController: NavHostController,tarea: TareaDto, viewModel: tareaViewModel = hiltViewModel()) {
+fun TareaRow(navHostController: NavHostController, tarea: TareaDto, viewModel: tareaViewModel = hiltViewModel()) {
     val backgroundColor = when (tarea.estado) {
         "En Proceso" -> Color(android.graphics.Color.parseColor("#FFFFE0"))
         "Terminada" -> Color(android.graphics.Color.parseColor("#90EE90"))
         else -> Color(android.graphics.Color.parseColor("#FFC0CB"))
     }
 
+    var codigoAcceso by remember { mutableStateOf("") }
+    var showErrorDialog by remember { mutableStateOf(false) }
+    var showCodigoAccesoDialog by remember { mutableStateOf(false) }
+
     Column(
         Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navHostController.navigate(Screen.actualizarEstado.route + "/${tarea.tareaId}") }
+            .clickable {
+                showCodigoAccesoDialog = true
+            }
             .background(color = backgroundColor)
     ) {
-
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)) {
@@ -96,8 +104,6 @@ fun TareaRow( navHostController: NavHostController,tarea: TareaDto, viewModel: t
                         textAlign = TextAlign.End,
                         modifier = Modifier.weight(2f)
                     )
-
-
                 }
 
                 Row(modifier = Modifier.fillMaxWidth()){
@@ -131,5 +137,63 @@ fun TareaRow( navHostController: NavHostController,tarea: TareaDto, viewModel: t
 
         }
         Divider(Modifier.fillMaxWidth())
+
+        if (showCodigoAccesoDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    showCodigoAccesoDialog = false
+                },
+                title = {
+                    Text(text = "Código de Acceso")
+                },
+                text = {
+                    OutlinedTextField(
+                        value = codigoAcceso,
+                        onValueChange = { codigoAcceso = it },
+                        maxLines = 1,
+                        singleLine = true,
+                        label = { Text("Ingrese el código") },
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.NumberPassword)
+                    )
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            if (codigoAcceso == tarea.codigoAcceso) {
+                                navHostController.navigate(Screen.actualizarEstado.route + "/${tarea.tareaId}")
+                            } else {
+                                showErrorDialog = true
+                            }
+                            showCodigoAccesoDialog = false
+                        }
+                    ) {
+                        Text("Aceptar")
+                    }
+                }
+            )
+        }
+    }
+    if (showErrorDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showErrorDialog = false
+            },
+            title = {
+                Text(text = "Error")
+            },
+            text = {
+                Text(text = "Código Incorrecto.")
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showErrorDialog = false
+                    }
+                ) {
+                    Text("Aceptar")
+                }
+            }
+        )
     }
 }
+

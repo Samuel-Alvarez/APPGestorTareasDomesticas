@@ -4,7 +4,9 @@ import android.app.DatePickerDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -13,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -81,6 +85,17 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
                         )
                     }
                 )
+                OutlinedTextField(
+                    value = viewModel.codigoAcesso,
+                    onValueChange = {},
+                    label = { Text(text = "Código") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(0.dp),
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.NumberPassword)
+                )
+
                 OutlinedTextField(
                     value = viewModel.fecha,
                     onValueChange = {},

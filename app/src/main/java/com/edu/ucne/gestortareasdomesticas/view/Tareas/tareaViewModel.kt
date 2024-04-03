@@ -43,6 +43,8 @@ class tareaViewModel @Inject constructor(
     var nombre by mutableStateOf("")
     var estado by mutableStateOf("")
     var empleadoId by mutableStateOf(0)
+    var codigoAcesso by mutableStateOf("")
+
 
 
     private var _state = mutableStateOf(TareasListState())
@@ -83,6 +85,7 @@ class tareaViewModel @Inject constructor(
                     estado = uiStateTarea.value.tarea!!.estado
                     nombre = uiStateTarea.value.tarea!!.nombre
                     empleadoId = uiStateTarea.value.tarea!!.empleadoId
+                    codigoAcesso = uiStateTarea.value.tarea!!.codigoAcceso
                 }
                 is Resource.Error -> {
                     uiState.update { it.copy(error = result.message ?: "Error desconocido") }
@@ -101,7 +104,8 @@ class tareaViewModel @Inject constructor(
                     descripcion = descripcion,
                     fecha = fecha,
                     nombre = nombre,
-                    estado = estado
+                    estado = estado,
+                    codigoAcceso = codigoAcesso
                 )
             )
 
