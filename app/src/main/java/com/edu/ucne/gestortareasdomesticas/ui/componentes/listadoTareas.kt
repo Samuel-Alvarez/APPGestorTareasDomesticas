@@ -55,9 +55,16 @@ fun TareaListBody( navHostController: NavHostController, tareaList: List<TareaDt
     val tareasPendientes = tareaList.filter { it.estado != "Terminada" }
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        LazyColumn {
-            items(tareasPendientes) { tarea ->
-                TareaRow(navHostController = navHostController, tarea = tarea, viewModel = viewModel)
+        if (tareasPendientes.isEmpty()) {
+            Text(
+                text = "No hay tareas pendientes...",
+                modifier = Modifier.padding(16.dp)
+            )
+        } else {
+            LazyColumn {
+                items(tareasPendientes) { tarea ->
+                    TareaRow(navHostController = navHostController, tarea = tarea, viewModel = viewModel)
+                }
             }
         }
     }
@@ -183,10 +190,10 @@ fun TareaRow(navHostController: NavHostController, tarea: TareaDto, viewModel: t
                 showErrorDialog = false
             },
             title = {
-                Text(text = "Error")
+                Text(text = "Código Incorrecto")
             },
             text = {
-                Text(text = "Código Incorrecto.")
+                Text(text = "Intente de nuevo.")
             },
             confirmButton = {
                 Button(

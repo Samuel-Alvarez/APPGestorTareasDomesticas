@@ -20,38 +20,26 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.edu.ucne.gestortareasdomesticas.data.remote.dto.EmpleadoDto
 import com.edu.ucne.gestortareasdomesticas.data.remote.dto.TareaDto
 import com.edu.ucne.gestortareasdomesticas.util.Screen
 import com.edu.ucne.gestortareasdomesticas.view.Tareas.tareaViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: tareaViewModel = hiltViewModel()) {
+
     var showMessage by remember { mutableStateOf(false) }
     remember {
 
         viewModel.setTarea(Id)
         0
     }
-
-    val calendar = Calendar.getInstance()
-    val year = calendar.get(Calendar.YEAR)
-    val month = calendar.get(Calendar.MONTH)
-    val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-    val contexto = LocalContext.current
-
-
-    val date = DatePickerDialog(
-        contexto, { d, year, month, day ->
-            val month = month + 1
-            viewModel.fecha = "$year-$month-$day"
-        }, year, month, day
-    )
 
     Scaffold(
         topBar = {
@@ -77,6 +65,7 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
                     value = viewModel.descripcion,
                     onValueChange = {},
                     label = { Text(text = "Descripcion") },
+                    readOnly = true,
                     modifier = Modifier.fillMaxWidth(),
                     leadingIcon = {
                         Icon(
@@ -108,18 +97,6 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
                             contentDescription = "",
                         )
                     },
-
-                    trailingIcon = {
-                        IconButton(
-                            onClick = { }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.CalendarToday,
-                                contentDescription = "",
-                            )
-                        }
-                    }
-
                 )
 
                 OutlinedTextField(
@@ -127,6 +104,7 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
                     onValueChange = {},
                     label = { Text(text = "Encargado") },
                     modifier = Modifier.fillMaxWidth(),
+                    readOnly = true,
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Person,
@@ -207,6 +185,10 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
                         viewModel.modificar()
                         showMessage = true
                         navHostController.navigate(Screen.listadoTareas.route)
+                        viewModel.viewModelScope.launch {
+                            delay(4000)
+                            showMessage = false
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Blue,
@@ -220,10 +202,6 @@ fun actualizarEstado(navHostController: NavHostController, Id: Int, viewModel: t
                     )
                 }
                 if (showMessage) {
-                    LaunchedEffect(showMessage) {
-                        delay(5000)
-                        showMessage = false
-                    }
                     Snackbar(
                         modifier = Modifier.padding(16.dp),
                         content = { Text(text = "¡Actualizado correctamente!") },
